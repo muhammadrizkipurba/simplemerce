@@ -10,7 +10,6 @@ export const onLoginClick = (user, pass) => {
             }
         }).then(res => { 
             if (res.data.length > 0) {
-                console.log(res.data[0])
 
                 const {id, username} = res.data[0]
 
@@ -19,7 +18,10 @@ export const onLoginClick = (user, pass) => {
                     payload: {id, username}
                 })
             } else {
-                console.log("Username dan password salah")
+               dispatch({
+                   type: 'AUTH_ERROR',
+                   payload: "Username and Password don't match"
+               })
             }
 
         }).catch(err => {
@@ -36,13 +38,17 @@ export const onRegisterUser = (user,emayl,pass) => {
                 username: user
             }
         }).then(res => {
-            if(res.data[0].length === 0){
+            console.log(res.data)
+            if(res.data.length === 0){
                 axios.post('http://localhost:1996/users', {
                     username: user,
                     email: emayl,
                     password: pass
                 }).then(res => {
-                    console.log("registrasi berhasil")
+                    dispatch({
+                        type: 'AUTH_SUCCESS',
+                        payload: 'Register Succeeded'
+                    })
                 })
             } else {
                 dispatch({

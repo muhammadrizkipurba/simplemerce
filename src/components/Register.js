@@ -21,6 +21,12 @@ class Register extends Component {
                     {this.props.error}
                 </div>
             )
+        } else if( this.props.succes !== ''){
+            return (
+                <div className="alert alert-success mt-4">
+                    {this.props.success}
+                </div>
+            )
         } else {
             return null
         }
@@ -69,7 +75,7 @@ class Register extends Component {
 }
 
 const mapStateToProps = state => {
-    return {error: state.auth.error}
+    return {error: state.auth.error, success: state.auth.success}
 }
 
 export default connect(mapStateToProps,{onRegisterUser})(Register)

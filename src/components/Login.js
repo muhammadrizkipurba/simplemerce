@@ -11,6 +11,19 @@ class Login extends Component {
         this.props.onLoginClick(user, pass)
     }
 
+    onErrorLogin = () => {
+        if(this.props.user.error !== ''){
+            return (
+                <div className="alert alert-danger mt-4">
+                    {this.props.user.error}
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+
+
 
     render() {
         if(this.props.user.username === ""){
@@ -36,6 +49,7 @@ class Login extends Component {
                                 </form>
                                 <button className="btn btn-success btn-block mt-5" 
                                     onClick={this.onSubmitClick}>Login</button>
+                                    {this.onErrorLogin()}
                                 <p className="lead">Don't have account ? <Link to="/register">Sign Up!</Link></p>
                             </div>
                         </div>
