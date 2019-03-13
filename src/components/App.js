@@ -16,9 +16,13 @@ class App extends Component {
     
     componentDidMount(){
         // akan di jalankan sekali ketika pertama kali component di render
+
+        // mengambil value yang disimpan pada file cookie masihLogin
         var userCookie = cookie.get('masihLogin')
+        // jika didapatkan username di file cookie, akan memanggil function keepLogin
         if(userCookie !== undefined){
             console.log("cookie ada")
+            // function keepLogin akan me-loginkan ulang username yg tersimpan pada file cookie
             this.props.keepLogin(userCookie)
         }
 

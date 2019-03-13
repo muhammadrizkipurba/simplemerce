@@ -6,12 +6,14 @@ const cookie = new cookies()
 
 export const onLoginClick = (user, pass) => {
     return (dispatch) => {
+        // cek di database untuk username dan password yang di input
         axios.get("http://localhost:1996/users", {
             params: {
                 username: user,
                 password: pass
             }
         }).then(res => { 
+            // jika data yang dicari ditemukan, maka res.data.length > 0
             if (res.data.length > 0) {
 
                 const {id, username} = res.data[0]
@@ -21,6 +23,8 @@ export const onLoginClick = (user, pass) => {
                     payload: {id, username}
                 })
 
+                // Membuat sebuah file cookie dengan nama masihLogin, dan valuenya adalah username yg login
+                // path : "/" agar dapat diakses di setiap component
                 cookie.set('masihLogin', username, {path:'/'})
 
             } else {
@@ -29,6 +33,9 @@ export const onLoginClick = (user, pass) => {
                    payload: "Username and Password don't match"
                })
 
+                // setelah tiga detik akan kirim action untuk menghapus pesan error dan success
+                // ini akan menyebabkan component render ulang dan menghilangkan pesan error pada
+                // login dan register
                setTimeout(() => {
                    dispatch({
                        type: 'AUTH_NO_MESS'
