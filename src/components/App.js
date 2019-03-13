@@ -3,11 +3,13 @@ import {BrowserRouter, Route} from 'react-router-dom'
 import cookies from 'universal-cookie'
 import {connect} from 'react-redux'
 
+import {keepLogin} from '../actions'
+
 import Home from './Home'
 import Header from './Header'
 import Login from './Login'
 import Register from './Register'
-import {keepLogin} from '../actions'
+import ManageProduct from './ManageProduct'
 
 const cookie = new cookies()
 
@@ -38,6 +40,7 @@ class App extends Component {
                     <Route path="/" exact component={Home}/>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
+                    <Route path="/manageproduct" component={ManageProduct}/>
                 </div>
             </BrowserRouter>
         )
