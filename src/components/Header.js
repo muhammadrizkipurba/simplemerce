@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
+import {onLogoutUser} from '../actions'
+
 class Header extends Component {
     render() {
         const {user} = this.props
@@ -87,5 +89,5 @@ const mapStateToProps = state => {
     return {user: state.auth}
 }
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps, {onLogoutUser})(Header)
 
