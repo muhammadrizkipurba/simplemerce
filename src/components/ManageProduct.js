@@ -4,14 +4,15 @@ import {connect} from 'react-redux'
 
 
 class ManageProduct extends Component {
+
     state = {
         products: []
     }
-
+ 
+    // ini jalan sekali setelah proses rendering pertama kali
     componentDidMount() {
         this.getProduct()
     }
-
     getProduct = () => {
         axios.get('http://localhost:1996/products')
             .then(res => {
@@ -20,7 +21,7 @@ class ManageProduct extends Component {
     }
 
     renderList = () => {
-        return this.state.products.map(item => {
+        return this.state.products.map(item => { // {id, name, desc, price, src}
             return (
                 <tr key={item.id}>
                     <td>{item.id}</td>
@@ -30,10 +31,33 @@ class ManageProduct extends Component {
                     <td><img className="list" src={item.src} alt={item.desc}></img></td>
                     <td>
                         <button className="btn btn-primary mr-2">Edit</button>
-                        <button className="btn btn-danger">Delete</button>
+                        <button onClick={() => {this.deleteProduct(item.id)}} className="btn btn-danger">Delete</button>
                     </td>
                 </tr>
             )
+        })
+    }
+
+    addProduct = () => {
+        const nama = this.name.value
+        const desk = this.desc.value
+        const harga = this.price.value
+        const sumber = this.pict.value
+        
+        axios.post('http://localhost:1996/products',{
+            name: nama,
+            desc: desk,
+            price: harga,
+            src:sumber
+        }).then(res => {
+            this.getProduct()
+        })
+    }
+
+    deleteProduct = (id) => {
+        axios.delete('http://localhost:1996/products/' + id)
+        .then(res => {
+            this.getProduct()
         })
     }
 
@@ -41,6 +65,7 @@ class ManageProduct extends Component {
     render() {
         return (
             <div className="container">
+                {["satu", "dua", "tiga"]}
                 <h1 className="display-4 text-center">Manage Product</h1>
                 <table className="table table-hover mb-5">
                         <thead>
@@ -54,6 +79,7 @@ class ManageProduct extends Component {
                             </tr>
                         </thead>
                         <tbody>
+
                             {this.renderList()}
                         </tbody>
                     </table>
@@ -74,7 +100,7 @@ class ManageProduct extends Component {
                                 <th scope="col"><input ref={input => this.desc = input} className="form-control" type="text" /></th>
                                 <th scope="col"><input ref={input => this.price = input} className="form-control" type="text" /></th>
                                 <th scope="col"><input ref={input => this.pict = input} className="form-control" type="text" /></th>
-                                <th scope="col"><button className="btn btn-outline-warning" >Add</button></th>
+                                <th scope="col"><button onClick={this.addProduct} className="btn btn-outline-warning" >Add</button></th>
                             </tr>
                         </tbody>
                     </table>
