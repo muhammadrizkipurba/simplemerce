@@ -6,7 +6,8 @@ import {connect} from 'react-redux'
 class ManageProduct extends Component {
 
     state = {
-        products: []
+        products: [],
+        selectedId: 0
     }
  
     // ini jalan sekali setelah proses rendering pertama kali
@@ -16,25 +17,49 @@ class ManageProduct extends Component {
     getProduct = () => {
         axios.get('http://localhost:1996/products')
             .then(res => {
-                this.setState({products: res.data})
+                this.setState({products: res.data, selectedId: 0})
             })
     }
 
     renderList = () => {
         return this.state.products.map(item => { // {id, name, desc, price, src}
-            return (
-                <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
-                    <td>{item.desc}</td>
-                    <td>{item.price}</td>
-                    <td><img className="list" src={item.src} alt={item.desc}></img></td>
-                    <td>
-                        <button className="btn btn-primary mr-2">Edit</button>
-                        <button onClick={() => {this.deleteProduct(item.id)}} className="btn btn-danger">Delete</button>
-                    </td>
-                </tr>
-            )
+            if(item.id !== this.state.selectedId){
+                return (
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.desc}</td>
+                        <td>{item.price}</td>
+                        <td><img className="list" src={item.src} alt={item.desc}></img></td>
+                        <td>
+                            <button onClick={() => {this.editProduct(item.id)}} className="btn btn-primary mr-2">Edit</button>
+                            <button onClick={() => {this.deleteProduct(item.id)}} className="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                )
+            } else {
+                return (
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>
+                            <input className="form-control" ref={input => {this.editName = input}} type="text" defaultValue={item.name}/>
+                        </td>
+                        <td>
+                            <input className="form-control" ref={input => {this.editDesc = input}} type="text" defaultValue={item.desc}/>
+                        </td>
+                        <td>
+                            <input className="form-control" ref={input => {this.editPrice = input}} type="text" defaultValue={item.price}/>
+                        </td>
+                        <td>
+                            <input className="form-control" ref={input => {this.editImg = input}} type="text" defaultValue={item.src}/>
+                        </td>
+                        <td>
+                            <button onClick={() => {this.onSaveItem(item.id)}} className="btn btn-primary mb-2">Save</button>
+                            <button onClick={() => {this.setState({selectedId: 0})}} className="btn btn-danger">Cancel</button>
+                        </td>
+                    </tr>
+                )
+            }
         })
     }
 
@@ -61,6 +86,24 @@ class ManageProduct extends Component {
         })
     }
 
+    editProduct = id => {
+        this.setState({selectedId: id})
+    }
+
+    onSaveItem = (id) => {
+        const nama = this.editName.value
+        const desk = this.editDesc.value
+        const harga = parseInt(this.editPrice.value)
+        const sumber = this.editImg.value
+        axios.put('http://localhost:1996/products/' + id, {
+            name: nama,
+            desc: desk,
+            price: harga,
+            src:sumber
+        }).then(() => {
+            this.getProduct()
+        })
+    }
 
     render() {
         return (
