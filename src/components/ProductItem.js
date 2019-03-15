@@ -13,7 +13,7 @@ class ProductItem extends Component {
                     <p className="card-text">{item.desc}</p>
                     <p className="card-text">Rp.{item.price}</p>
                     <input className="form-control" type="number" />
-                    <Link to="/"><button className="btn btn-secondary btn-block btn-sm my-2">Detail</button></Link>
+                    <Link to={"/detailproduct/" + item.id}><button className="btn btn-secondary btn-block btn-sm my-2">Detail</button></Link>
                     <button  className="btn btn-primary btn-block btn-sm my-2">Add to Cart</button>
                 </div>
             </div>

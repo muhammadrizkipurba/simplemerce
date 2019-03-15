@@ -11,6 +11,7 @@ import Login from './Login'
 import Register from './Register'
 import ManageProduct from './ManageProduct'
 import ProductItem from './ProductItem';
+import DetailProduct from './DetailProduct';
 
 const cookie = new cookies()
 
@@ -41,7 +42,7 @@ class App extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/manageproduct" component={ManageProduct}/>
-                    <Route path="/productitem" component={ProductItem}/>
+                    <Route path="/detailproduct/:asdfg" component={DetailProduct}/>
                 </div>
             </BrowserRouter>
         )
