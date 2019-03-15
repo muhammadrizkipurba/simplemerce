@@ -124,7 +124,6 @@ class ManageProduct extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-    
                                 {this.renderList()}
                             </tbody>
                         </table>

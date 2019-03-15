@@ -10,6 +10,7 @@ import Header from './Header'
 import Login from './Login'
 import Register from './Register'
 import ManageProduct from './ManageProduct'
+import ProductItem from './ProductItem';
 
 const cookie = new cookies()
 
@@ -23,7 +24,6 @@ class App extends Component {
         var userCookie = cookie.get('masihLogin')
         // jika didapatkan username di file cookie, akan memanggil function keepLogin
         if(userCookie !== undefined){
-            console.log("cookie ada")
             // function keepLogin akan me-loginkan ulang username yg tersimpan pada file cookie
             this.props.keepLogin(userCookie)
         }
@@ -41,6 +41,7 @@ class App extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/manageproduct" component={ManageProduct}/>
+                    <Route path="/productitem" component={ProductItem}/>
                 </div>
             </BrowserRouter>
         )
