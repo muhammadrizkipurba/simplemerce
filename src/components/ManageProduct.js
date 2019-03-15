@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 
 class ManageProduct extends Component {
@@ -74,14 +75,14 @@ class ManageProduct extends Component {
             desc: desk,
             price: harga,
             src:sumber
-        }).then(res => {
+        }).then(() => {
             this.getProduct()
         })
     }
 
     deleteProduct = (id) => {
         axios.delete('http://localhost:1996/products/' + id)
-        .then(res => {
+        .then(() => {
             this.getProduct()
         })
     }
@@ -106,50 +107,59 @@ class ManageProduct extends Component {
     }
 
     render() {
-        return (
-            <div className="container">
-                {["satu", "dua", "tiga"]}
-                <h1 className="display-4 text-center">Manage Product</h1>
-                <table className="table table-hover mb-5">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">NAME</th>
-                                <th scope="col">DESC</th>
-                                <th scope="col">PRICE</th>
-                                <th scope="col">PICTURE</th>
-                                <th scope="col">ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {this.renderList()}
-                        </tbody>
-                    </table>
-                    <h1 className="display-4 text-center">input Product</h1>
-                    <table className="table text-center">
-                        <thead>
-                            <tr>
-                                <th scope="col">NAME</th>
-                                <th scope="col">DESC</th>
-                                <th scope="col">PRICE</th>
-                                <th scope="col">PICTURE</th>
-                                <th scope="col">ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="col"><input ref={input => this.name = input} className="form-control" type="text" /></th>
-                                <th scope="col"><input ref={input => this.desc = input} className="form-control" type="text" /></th>
-                                <th scope="col"><input ref={input => this.price = input} className="form-control" type="text" /></th>
-                                <th scope="col"><input ref={input => this.pict = input} className="form-control" type="text" /></th>
-                                <th scope="col"><button onClick={this.addProduct} className="btn btn-outline-warning" >Add</button></th>
-                            </tr>
-                        </tbody>
-                    </table>
-            </div>
-        )
+        if(this.props.username !== ''){
+            return (
+                <div className="container">
+                    {["satu", "dua", "tiga"]}
+                    <h1 className="display-4 text-center">Manage Product</h1>
+                    <table className="table table-hover mb-5">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">NAME</th>
+                                    <th scope="col">DESC</th>
+                                    <th scope="col">PRICE</th>
+                                    <th scope="col">PICTURE</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+    
+                                {this.renderList()}
+                            </tbody>
+                        </table>
+                        <h1 className="display-4 text-center">input Product</h1>
+                        <table className="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">NAME</th>
+                                    <th scope="col">DESC</th>
+                                    <th scope="col">PRICE</th>
+                                    <th scope="col">PICTURE</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="col"><input ref={input => this.name = input} className="form-control" type="text" /></th>
+                                    <th scope="col"><input ref={input => this.desc = input} className="form-control" type="text" /></th>
+                                    <th scope="col"><input ref={input => this.price = input} className="form-control" type="text" /></th>
+                                    <th scope="col"><input ref={input => this.pict = input} className="form-control" type="text" /></th>
+                                    <th scope="col"><button onClick={this.addProduct} className="btn btn-outline-warning" >Add</button></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            )
+        } else {
+            return <Redirect to="/"/>
+        }
+        
     }
 }
 
-export default connect()(ManageProduct)
+const mstp = state => {
+    return {username: state.auth.username}
+}
+
+export default connect(mstp)(ManageProduct)
