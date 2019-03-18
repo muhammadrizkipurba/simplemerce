@@ -5,7 +5,8 @@ import ProductItem from './ProductItem';
 
 class Home extends Component {
     state = {
-        products: []
+        products: [],
+        productSearch : []
     }
 
     componentDidMount () {
@@ -15,12 +16,12 @@ class Home extends Component {
     getProduct = () => {
         axios.get('http://localhost:1996/products')
             .then(res => {
-                this.setState({products: res.data})
+                this.setState({products: res.data, productSearch: res.data})
             })
     }
     
     renderList = () => {
-       return this.state.products.map(iteem => {
+       return this.state.productSearch.map(iteem => {
             return (
                 <ProductItem item={iteem}/>
             )
@@ -28,17 +29,55 @@ class Home extends Component {
     }
 
     onBtnSearch = () => {
-        // const name = this.name.value
-        // const min = parseInt(this.min.value)
-        const max = parseInt(this.max.value)
-        
+        const name = this.name.value // h
+        const min = parseInt(this.min.value) // NaN
+        const max = parseInt(this.max.value) // NaN
+
         var arrSearch = this.state.products.filter(item => {
-            return item.price <= max
+            if (isNaN(min) && isNaN(max)) {// search hanya dengan name , min dan max kosong
+                return (
+                    item.name.toLowerCase().includes(h)
+                )
+            } else if (isNaN(min)) {
+                return (
+                    item.name.toLowerCase().includes(name.toLowerCase()) &&
+                    item.price <= max
+                )
+            } else if (isNaN(max)) {
+                return (
+                    item.name.toLowerCase().includes(name.toLowerCase()) &&
+                    item.price >= min
+                )
+            } else {
+                return (
+                    item.name.toLowerCase().includes(name.toLowerCase()) &&
+                    item.price <= max &&
+                    item.price >= min
+                )
+            }
+
         })
 
-        this.setState({products: arrSearch})
+        this.setState({ productSearch: arrSearch })
+
 
     }
+
+    // onBtnSearchDonny = () => {
+    //     // const name = this.name.value
+    //     // const min = parseInt(this.min.value)
+    //     const max = parseInt(this.max.value)
+        
+    //     var arrSearch = this.state.products.filter(item => {
+    //         return item.price <= max 
+    //     })
+    //     if (arrSearch.length > 0) {
+    //         this.setState({ products: arrSearch })
+    //     } else {
+    //         this.getProduct()
+    //     }
+
+    // }
 
     render() {
         return (
